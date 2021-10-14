@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config-map
+data:
+  user_name: User from Kubernetes ConfigMap
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-app
+
+  template:
+    metadata:
+      labels:
+        app: backend-app
+    spec:
+      containers:
+      - name: backend-app
+        image: praveensaxena/backend:0.0.1
+        imagePullPolicy: "Always"
+        ports:
+          - containerPort: 9002
+        env:
+          - name: USER_NAME
+            valueFrom: 
+              configMapKeyRef:
+                name: backend-config-map
+                key: user_name
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name:  backend-app-svc
+spec:
+  selector:
+    app:  backend-app
+  type:  ClusterIP
+  ports:
+  - name:  backend-app-port
+    port:  80
+    targetPort:  9002
