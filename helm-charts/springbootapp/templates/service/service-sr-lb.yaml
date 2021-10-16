@@ -1,0 +1,16 @@
+{{- if .Values.serviceregistry.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name:  {{ .Values.serviceregistry.lbservicename }}
+  labels:
+    app: {{ .Values.serviceregistry.name }}
+spec:
+  selector:
+    app:  {{ .Values.serviceregistry.name }}
+  type:  {{ .Values.serviceregistry.service.type }}
+  ports:
+  - name:  {{ .Values.serviceregistry.lbport }}
+    port:  {{ .Values.serviceregistry.service.port }}
+    targetPort:  {{ .Values.serviceregistry.service.targetPort }}
+{{- end}}

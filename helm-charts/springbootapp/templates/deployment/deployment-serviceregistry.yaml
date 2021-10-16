@@ -1,0 +1,38 @@
+{{- if .Values.serviceregistry.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.serviceregistry.configmap_name }}
+data:
+  eureka-server: {{ .Values.serviceregistry.env.eureka_url }}
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.serviceregistry.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.serviceregistry.name }}
+  serviceName: "eureka"
+  replicas: {{ .Values.serviceregistry.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.serviceregistry.name }}
+    spec:
+      containers:
+      - name: {{ .Values.serviceregistry.name }}
+        image: {{ .Values.serviceregistry.image.repository }}
+        imagePullPolicy: {{ .Values.serviceregistry.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.serviceregistry.image.port.containerPort }}
+        env:
+          - name: EUREKA_SERVER
+            valueFrom: 
+              configMapKeyRef:
+                name: {{ .Values.serviceregistry.configmap_name }}
+                key: eureka-server
+{{- end }}

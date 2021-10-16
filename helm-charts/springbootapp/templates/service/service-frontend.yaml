@@ -1,0 +1,13 @@
+{{- if .Values.frontend.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name:  frontend-app-svc
+spec:
+  selector:
+    app:  {{ .Values.frontend.name }}
+  type:  {{ .Values.frontend.service.type }}
+  ports:
+  - port:  {{ .Values.frontend.service.port }}
+    targetPort:  {{ .Values.frontend.service.targetPort }}
+{{- end -}}

@@ -1,0 +1,17 @@
+{{- if .Values.serviceregistry.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name:  {{ .Values.serviceregistry.name }}
+  labels:
+    app: {{ .Values.serviceregistry.name }}
+spec:
+  clusterIP: None
+  ports:
+  - port: {{ .Values.serviceregistry.service.port }}
+    name: eurekaserviceport
+  selector:
+    app: {{ .Values.serviceregistry.name }}
+
+{{- end}}
+
