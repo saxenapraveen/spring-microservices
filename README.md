@@ -43,9 +43,17 @@ C. With these 3 docker images, kubernetes deployments has been done.
     There is one more service (Nodeport) to enable eureka page access from outside on port 8761.
     Config map is created which stores EUREKA_SERVER Url and that would be set as environment and passed to service registry microservices.
     
-
      
-    
+Values which has been templatized in Helm Chart:
+  a. Config Map Name
+  b. User Name Env Variable
+  c. Replica Count
+  d. App Name
+  e. Docker Hub Image Repository
+  f. Docker Hub Image Pull Policy
+  g. Container Port
+
+  
                       
    
 
